@@ -108,3 +108,38 @@ Allure reports include:
  If you found this project helpful, give it a star on GitHub!
 
 
+## 📊 Test Reports
+
+This framework generates professional Allure reports with detailed test execution analytics.
+
+### Latest Test Results
+- ✅ **12/12 tests passing** (100% success rate)
+- ⏱️ **Execution time:** ~43 seconds
+- 📅 **Last run:** December 13, 2025
+
+### Sample Reports
+
+#### Overview Dashboard
+![Allure Overview](docs/allure-overview.jpg)
+*12 automated tests with 100% pass rate*
+
+#### Test Suites
+![Test Suites](docs/allure-suites.jpg)
+*Complete test coverage across all features*
+
+#### Timeline
+![Timeline](docs/allure-timeline.jpg)
+*Fast and efficient test execution*
+
+#### Test Behaviors
+![Behaviors](docs/allure-behaviors.jpg)
+*Detailed view of all 12 test cases*
+
+### Generate Reports Locally
+```bash
+# Run tests with Allure
+pytest --alluredir=reports/allure-results
+
+# View report
+allure serve reports/allure-results
+```
