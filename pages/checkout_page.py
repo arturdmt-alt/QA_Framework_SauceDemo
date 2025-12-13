@@ -43,5 +43,19 @@ class CheckoutPage(BasePage):
     
     def get_item_total(self) -> str:
         """Returns item subtotal"""
-        text = self.get_text(self.ITEM_TOTAL)
+        return self.get_text(self.ITEM_TOTAL)
+    
+    def get_tax(self) -> str:
+        """Returns the tax amount from checkout overview"""
+        return self.get_text(self.TAX)
+    
+    def get_total(self) -> str:
+        """Returns the total amount"""
+        return self.get_text(self.TOTAL)
+    
+    def click_finish(self):
+        """Click finish button to complete purchase"""
+        print("🔄 Finalizando compra...")
+        self.click(self.FINISH_BUTTON)
+        print("✅ Compra finalizada")
         
