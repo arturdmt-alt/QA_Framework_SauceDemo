@@ -1,5 +1,7 @@
 #  QA Framework - SauceDemo
 
+![Tests](https://github.com/arturdmt-alt/QA_Framework_SauceDemo/actions/workflows/tests.yml/badge.svg)
+
 [![Python](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
 [![Playwright](https://img.shields.io/badge/Playwright-1.57-green.svg)](https://playwright.dev/)
 [![Pytest](https://img.shields.io/badge/Pytest-9.0-red.svg)](https://pytest.org/)
