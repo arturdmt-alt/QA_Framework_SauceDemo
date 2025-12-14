@@ -45,4 +45,18 @@ class ProductsPage(BasePage):
         button_text = self.page.text_content(button_selector)
         return "Remove" in button_text
     
+    def sort_products(self, sort_option: str):
+        """Sort products by selected option"""
+        print(f"🔄 Ordenando productos: {sort_option}")
+        sort_dropdown = self.page.locator(".product_sort_container")
+        sort_dropdown.select_option(sort_option)
+        print(f"✅ Productos ordenados: {sort_option}")
     
+    def get_product_names(self) -> list:
+        """Get list of all product names"""
+        return self.page.locator(".inventory_item_name").all_text_contents()
+    
+    def get_product_prices(self) -> list:
+        """Get list of all product prices as floats"""
+        price_texts = self.page.locator(".inventory_item_price").all_text_contents()
+        return [float(price.replace("$", "")) for price in price_texts]

@@ -38,4 +38,43 @@ class TestProducts:
         cart_count = products_page.get_cart_badge_count()
         assert cart_count == "3"
         print("✅ TC003: Múltiples productos agregados")
+    
+    def test_sort_products_a_to_z(self, page):
+        """TC013: Sort products A to Z"""
+        login_page = LoginPage(page)
+        login_page.navigate()
+        login_page.login("standard_user", "secret_sauce")
+        
+        products_page = ProductsPage(page)
+        products_page.sort_products("az")
+        
+        names = products_page.get_product_names()
+        assert names == sorted(names), "Products not sorted A-Z"
+        print("✅ TC013: Products sorted A-Z correctly")
+    
+    def test_sort_products_z_to_a(self, page):
+        """TC014: Sort products Z to A"""
+        login_page = LoginPage(page)
+        login_page.navigate()
+        login_page.login("standard_user", "secret_sauce")
+        
+        products_page = ProductsPage(page)
+        products_page.sort_products("za")
+        
+        names = products_page.get_product_names()
+        assert names == sorted(names, reverse=True), "Products not sorted Z-A"
+        print("✅ TC014: Products sorted Z-A correctly")
+    
+    def test_sort_products_price_low_to_high(self, page):
+        """TC015: Sort products by price (low to high)"""
+        login_page = LoginPage(page)
+        login_page.navigate()
+        login_page.login("standard_user", "secret_sauce")
+        
+        products_page = ProductsPage(page)
+        products_page.sort_products("lohi")
+        
+        prices = products_page.get_product_prices()
+        assert prices == sorted(prices), "Products not sorted by price"
+        print("✅ TC015: Products sorted by price correctly")
         
