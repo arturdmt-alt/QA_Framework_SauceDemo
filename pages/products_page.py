@@ -7,6 +7,7 @@ class ProductsPage(BasePage):
         "[.//div[text()='{}']]//button"
     )
     CART_BADGE = ".shopping_cart_badge"
+    CART_LINK = ".shopping_cart_link"
 
     def add_product_to_cart_by_name(self, product_name):
         button = self.page.locator(
@@ -15,11 +16,16 @@ class ProductsPage(BasePage):
         button.wait_for(state="visible", timeout=5000)
         button.click()
 
-    # alias por compatibilidad (por si algún test viejo lo usa)
+    # compatibilidad
     def add_product_to_cart(self, product_name):
         self.add_product_to_cart_by_name(product_name)
 
     def get_cart_badge_count(self):
         badge = self.page.locator(self.CART_BADGE)
         return badge.text_content() if badge.is_visible() else "0"
+
+    def go_to_cart(self):
+        cart = self.page.locator(self.CART_LINK)
+        cart.wait_for(state="visible", timeout=5000)
+        cart.click()
 
