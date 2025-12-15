@@ -28,4 +28,10 @@ class ProductsPage(BasePage):
         cart = self.page.locator(self.CART_LINK)
         cart.wait_for(state="visible", timeout=5000)
         cart.click()
+    SORT_DROPDOWN = ".product_sort_container"
+
+    def sort_products(self, sort_order):
+        """Sort products: az, za, lohi, hilo"""
+        dropdown = self.page.locator(self.SORT_DROPDOWN)
+        dropdown.select_option(sort_order)
 
