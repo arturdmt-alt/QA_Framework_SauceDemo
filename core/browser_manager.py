@@ -1,26 +1,26 @@
-﻿from playwright.sync_api import sync_playwright, Page, Browser, BrowserContext
-
+﻿import os
+from playwright.sync_api import sync_playwright
 
 class BrowserManager:
-    """Manages browser instance and page for tests"""
-    
-    def __init__(self, headless: bool = False):
-        self.headless = headless
+    def __init__(self):
+        self.headless = os.getenv("HEADLESS", "true").lower() == "true"
         self.playwright = None
-        self.browser: Browser = None
-        self.context: BrowserContext = None
-        self.page: Page = None
-    
-    def get_page(self) -> Page:
-        """Initialize browser and return page"""
-        self.playwright = sync_playwright().start()
-        self.browser = self.playwright.chromium.launch(headless=self.headless)
-        self.context = self.browser.new_context()
-        self.page = self.context.new_page()
+        self.browser = None
+        self.context = None
+        self.page = None
+
+    def start(self):
+        if not self.playwright:
+            self.playwright = sync_playwright().start()
+            self.browser = self.playwright.chromium.launch(
+                headless=self.headless,
+                args=["--no-sandbox", "--disable-dev-shm-usage"]
+            )
+            self.context = self.browser.new_context()
+            self.page = self.context.new_page()
         return self.page
-    
+
     def close(self):
-        """Close browser and cleanup"""
         if self.context:
             self.context.close()
         if self.browser:
