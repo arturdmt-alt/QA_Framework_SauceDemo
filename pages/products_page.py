@@ -20,7 +20,7 @@ class ProductsPage(BasePage):
         button.wait_for(state="visible", timeout=5000)
         button.click()
 
-    # compatibilidad
+    
     def add_product_to_cart(self, product_name):
         self.add_product_to_cart_by_name(product_name)
 
@@ -39,7 +39,7 @@ class ProductsPage(BasePage):
         dropdown.wait_for(state="visible", timeout=5000)
         dropdown.select_option(sort_order)
 
-    # 🔥 ESTO ES LO QUE FALTABA
+    
     def get_product_names(self):
         items = self.page.locator(self.PRODUCT_NAME)
         items.first.wait_for(state="visible", timeout=5000)
