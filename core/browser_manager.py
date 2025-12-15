@@ -6,8 +6,6 @@ class BrowserManager:
         self.headless = os.getenv("HEADLESS", "true").lower() == "true"
         self.playwright = None
         self.browser = None
-        self.context = None
-        self.page = None
 
     def start(self):
         if not self.playwright:
@@ -16,15 +14,15 @@ class BrowserManager:
                 headless=self.headless,
                 args=["--no-sandbox", "--disable-dev-shm-usage"]
             )
-            self.context = self.browser.new_context()
-            self.page = self.context.new_page()
-        return self.page
+
+        context = self.browser.new_context()
+        page = context.new_page()
+        page._context = context   # guardar referencia
+        return page
 
     def close(self):
-        if self.context:
-            self.context.close()
         if self.browser:
             self.browser.close()
         if self.playwright:
             self.playwright.stop()
-            
+

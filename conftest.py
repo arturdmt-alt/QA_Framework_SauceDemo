@@ -9,4 +9,7 @@ def browser_manager():
 
 @pytest.fixture(scope="function")
 def page(browser_manager):
-    return browser_manager.start()
+    page = browser_manager.start()
+    yield page
+    page._context.close()
+
