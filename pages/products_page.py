@@ -2,12 +2,16 @@
 
 
 class ProductsPage(BasePage):
+    PRODUCT_NAME = ".inventory_item_name"
+    PRODUCT_PRICE = ".inventory_item_price"
+    SORT_DROPDOWN = ".product_sort_container"
+    CART_BADGE = ".shopping_cart_badge"
+    CART_LINK = ".shopping_cart_link"
+
     ADD_TO_CART_BUTTON_TEMPLATE = (
         "//div[contains(@class,'inventory_item')]"
         "[.//div[text()='{}']]//button"
     )
-    CART_BADGE = ".shopping_cart_badge"
-    CART_LINK = ".shopping_cart_link"
 
     def add_product_to_cart_by_name(self, product_name):
         button = self.page.locator(
@@ -28,10 +32,22 @@ class ProductsPage(BasePage):
         cart = self.page.locator(self.CART_LINK)
         cart.wait_for(state="visible", timeout=5000)
         cart.click()
-    SORT_DROPDOWN = ".product_sort_container"
 
     def sort_products(self, sort_order):
-        """Sort products: az, za, lohi, hilo"""
+        """az, za, lohi, hilo"""
         dropdown = self.page.locator(self.SORT_DROPDOWN)
+        dropdown.wait_for(state="visible", timeout=5000)
         dropdown.select_option(sort_order)
+
+    # 🔥 ESTO ES LO QUE FALTABA
+    def get_product_names(self):
+        items = self.page.locator(self.PRODUCT_NAME)
+        items.first.wait_for(state="visible", timeout=5000)
+        return items.all_text_contents()
+
+    def get_product_prices(self):
+        prices = self.page.locator(self.PRODUCT_PRICE)
+        prices.first.wait_for(state="visible", timeout=5000)
+        values = prices.all_text_contents()
+        return [float(p.replace("$", "")) for p in values]
 
