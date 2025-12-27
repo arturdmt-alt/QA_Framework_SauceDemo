@@ -1,6 +1,6 @@
 # QA Framework - SauceDemo
 
-![Tests](https://github.com/arturdmt-alt/QA_Framework_SauceDemo/actions/workflows/tests.yml/badge.svg)
+[![Tests](https://github.com/arturdmt-alt/QA_Framework_SauceDemo/actions/workflows/tests.yml/badge.svg)](https://github.com/arturdmt-alt/QA_Framework_SauceDemo/actions/workflows/tests.yml)
 
 [![Python](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
 [![Playwright](https://img.shields.io/badge/Playwright-1.57-green.svg)](https://playwright.dev/)
@@ -166,5 +166,3 @@ This debugging journey demonstrates real-world problem-solving and the value of 
 - GitHub: https://github.com/arturdmt-alt 
 
 ---
-
- If you found this project helpful, give it a star on GitHub!
