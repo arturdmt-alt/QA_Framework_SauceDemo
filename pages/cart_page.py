@@ -1,3 +1,7 @@
+import re
+
+from playwright.sync_api import expect
+
 from pages.base_page import BasePage
 
 
@@ -8,40 +12,34 @@ class CartPage(BasePage):
     CONTINUE_SHOPPING_BUTTON = "#continue-shopping"
     CART_BADGE = ".shopping_cart_badge"
 
-    def get_cart_items_count(self):
-        items = self.page.locator(self.CART_ITEMS).all()
-        return len(items)
+    def get_cart_items_count(self) -> int:
+        items = self.page.locator(self.CART_ITEMS)
+        items.first.wait_for(state="visible", timeout=5000)
+        return items.count()
 
-    def get_cart_item_names(self):
-        items = self.page.locator(self.CART_ITEM_NAME).all()
-        return [item.text_content() for item in items]
+    def get_cart_item_names(self) -> list[str]:
+        return self.page.locator(self.CART_ITEM_NAME).all_inner_texts()
 
-    # usado por tests checkout
-    def go_to_checkout(self):
-        btn = self.page.locator(self.CHECKOUT_BUTTON)
-        btn.wait_for(state="visible", timeout=5000)
-        btn.click()
+    def go_to_checkout(self) -> None:
+        self.page.locator(self.CHECKOUT_BUTTON).click()
 
-    # alias por compatibilidad
-    def click_checkout(self):
-        self.go_to_checkout()
+    def continue_shopping(self) -> None:
+        self.page.locator(self.CONTINUE_SHOPPING_BUTTON).click()
 
-    # usado por tests checkout
-    def continue_shopping(self):
-        btn = self.page.locator(self.CONTINUE_SHOPPING_BUTTON)
-        btn.wait_for(state="visible", timeout=5000)
-        btn.click()
+    def remove_product(self, product_name: str) -> None:
+        exact_name = re.compile(rf"^{re.escape(product_name)}$")
 
-    # alias por compatibilidad
-    def click_continue_shopping(self):
-        self.continue_shopping()
-
-    def remove_product(self, product_name):
-        btn = self.page.locator(
-            f"//div[contains(@class,'cart_item')]"
-            f"[.//div[@class='inventory_item_name' and text()='{product_name}']]"
-            f"//button"
+        product = self.page.locator(self.CART_ITEMS).filter(
+            has=self.page.locator(
+                self.CART_ITEM_NAME,
+                has_text=exact_name,
+            )
         )
-        btn.wait_for(state="visible", timeout=5000)
-        btn.click()
+
+        expect(
+            product,
+            message=f"El producto {product_name!r} no está en el carrito",
+        ).to_have_count(1)
+
+        product.get_by_role("button", name="Remove").click()
 
