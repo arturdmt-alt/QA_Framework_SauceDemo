@@ -32,6 +32,7 @@ class ProductsPage(BasePage):
         cart = self.page.locator(self.CART_LINK)
         cart.wait_for(state="visible", timeout=5000)
         cart.click()
+        self.page.wait_for_load_state("domcontentloaded")
 
     def sort_products(self, sort_order):
         """az, za, lohi, hilo"""
@@ -50,4 +51,3 @@ class ProductsPage(BasePage):
         prices.first.wait_for(state="visible", timeout=5000)
         values = prices.all_text_contents()
         return [float(p.replace("$", "")) for p in values]
-
