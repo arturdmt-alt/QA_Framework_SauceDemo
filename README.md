@@ -159,6 +159,25 @@ This debugging journey demonstrates real-world problem-solving and the value of 
 
 ---
 
+### Cart Items Count Race Condition (Sep 14, 2026)
+
+**Challenge:** A routine documentation commit unexpectedly triggered a CI run that failed 3 of 15 tests (`test_view_cart_with_products`, `test_continue_shopping_from_cart`, `test_complete_purchase_flow`), all with `assert 0 == 2` right after navigating to the cart page.
+
+**Root Cause:**
+`get_cart_items_count()` in `CartPage` read the cart items using Playwright's `.count()` / `.all()`, which do not auto-wait for elements to appear. SauceDemo renders the cart view via client-side JavaScript rather than a full page reload, so there was no navigation event to wait on, and the count was being read before the cart items had actually rendered.
+
+**Solution:**
+Added an explicit wait for the first cart item to become visible before reading the count (`items.first.wait_for(state="visible", timeout=5000)`), matching the same pattern already used in `get_product_names()` and `get_product_prices()`. Also hardened `remove_product()` with an exact-match locator filter and a Playwright web-first assertion (`expect(...).to_have_count(1)`) instead of a plain wait.
+
+**Current Status:**
+-  All 15 automated tests passing again
+-  CI/CD pipeline green
+
+**Key Takeaway:**
+In Playwright, query methods like `.count()` and `.all()` don't auto-wait the way action methods like `.click()` do. Reading data right after a client-side (JS-driven) navigation needs an explicit wait on the expected content — `wait_for_load_state()` alone won't catch it if there's no real page load happening.
+
+---
+
 ## Author
 
 **Artur Dmytriyev**
